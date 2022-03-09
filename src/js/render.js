@@ -1,5 +1,10 @@
 const size = 1400;
 const pi2 = 2 * Math.PI;
+const limits = {
+  hsv: [360, 100, 100],
+  rgb: [255, 255, 255]
+};
+
 const convert = require("color-convert");
 const canvas = document.querySelector("#draw");
 const renderArea = document.querySelector(".render");
@@ -14,10 +19,11 @@ function drawPixel(x, y, r, g, b) {
   canvasData.data[index + 3] = 255;
 }
 
-function buildImage() {
+function buildImage(imgClick) {
   context.putImageData(canvasData, 0, 0);
   const img = new Image();
   img.src = canvas.toDataURL();
+  img.onclick = imgClick;
   if (renderArea.firstChild) {
     renderArea.removeChild(renderArea.firstChild);
   }
@@ -83,10 +89,13 @@ function asScale(scaleOpt) {
   if (scaleOpt === "minusPlusOne") {
     return (val, max) => ((val + 1) * max) / 2;
   }
+  if (scaleOpt === "minMax") {
+    return (val, max, low, high) => (max * (val - low)) / (high - low || 1);
+  }
   return val => val;
 }
 
-function render(firstOpt, secondOpt, thirdOpt, colourMode) {
+function render(firstOpt, secondOpt, thirdOpt, colourMode, imgClick) {
   let firstFn, secondFn, thirdFn;
   let firstScale, secondScal, thirdScale;
   let firstLimit, secondLimit, thirdLimit;
@@ -121,31 +130,49 @@ function render(firstOpt, secondOpt, thirdOpt, colourMode) {
   }
 
   const values = new Array(size);
+  let firstMin = Infinity;
+  let firstMax = -Infinity;
+  let secondMin = Infinity;
+  let secondMax = -Infinity;
+  let thirdMin = Infinity;
+  let thirdMax = -Infinity;
+
   for (let x = 0; x < size; x++) {
     values[x] = new Array(size);
     for (let y = 0; y < size; y++) {
       const xr = x / (size - 1);
       const yr = y / (size - 1);
-      values[x][y] = [
-        firstFn(x, y, xr, yr, size, pi2),
-        secondFn(x, y, xr, yr, size, pi2),
-        thirdFn(x, y, xr, yr, size, pi2)
-      ];
+      const first = firstFn(x, y, xr, yr, size, pi2);
+      const second = secondFn(x, y, xr, yr, size, pi2);
+      const third = thirdFn(x, y, xr, yr, size, pi2);
+
+      values[x][y] = [first, second, third];
+      firstMin = Math.min(first, firstMin);
+      firstMax = Math.max(first, firstMax);
+      secondMin = Math.min(second, secondMin);
+      secondMax = Math.max(second, secondMax);
+      thirdMin = Math.min(third, thirdMin);
+      thirdMax = Math.max(third, thirdMax);
     }
   }
 
+  let [l1, l2, l3] = limits[colourMode];
   for (let x = 0; x < size; x++) {
     for (let y = 0; y < size; y++) {
       let [first, second, third] = values[x][y];
-      first = firstLimit(firstScale(first, 360), 360);
-      second = secondLimit(secondScale(second, 100), 100);
-      third = thirdLimit(thirdScale(third, 100), 100);
-      const [r, g, b] = convert.hsv.rgb.raw(first, second, third);
+      first = firstLimit(firstScale(first, l1, firstMin, firstMax), l1);
+      second = secondLimit(secondScale(second, l2, secondMin, secondMax), l2);
+      third = thirdLimit(thirdScale(third, l3, thirdMin, thirdMax), l3);
+
+      const [r, g, b] =
+        colourMode === "hsv"
+          ? convert.hsv.rgb.raw(first, second, third)
+          : [first, second, third];
       drawPixel(x, y, r, g, b);
     }
   }
 
-  buildImage();
+  buildImage(imgClick);
 }
 
 module.exports = render;
