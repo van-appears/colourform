@@ -12,137 +12,169 @@
   </head>
   <body>
     <div id="model" class="rgb">
-      <label for="first" title="r">r</label>
-      <textarea id="first" name="first" rows="3">
-yr - xr
-        </textarea
-      >
-      <div class="controls">
-        <input
-          id="firstMinMax"
-          type="radio"
-          name="firstScale"
-          value="minMax"
-          checked
-        />
-        <label for="firstMinMax" title="Scale using min to max"></label>
-        <input id="firstNone" type="radio" name="firstScale" value="none" />
-        <label for="firstNone" title="No scale"></label>
-        <input
-          id="firstMinusPlusOne"
-          type="radio"
-          name="firstScale"
-          value="minusPlusOne"
-        />
-        <label for="firstMinusPlusOne" title="Scale using -1 to +1"></label>
-        <input
-          id="firstLimit"
-          type="radio"
-          name="firstLimit"
-          value="limit"
-          checked
-        />
-        <label for="firstLimit" title="Stop at limit"></label>
-        <input id="firstWrap" type="radio" name="firstLimit" value="wrap" />
-        <label for="firstWrap" title="Wrap at limit"></label>
-        <input
-          id="firstReflect"
-          type="radio"
-          name="firstLimit"
-          value="reflect"
-        />
-        <label for="firstReflect" title="Reflect at limit"></label>
+      <div class="group">
+        <label for="first" title="r">r</label>
+        <!-- prettier-ignore -->
+        <textarea id="first" name="first" rows="3" spellcheck="false">
+yr - xr</textarea>
+        <div class="controls">
+          <input
+            id="firstMinMax"
+            type="radio"
+            name="firstScale"
+            value="minMax"
+            checked
+          />
+          <label for="firstMinMax" title="Scale using min to max"></label>
+          <input id="firstNone" type="radio" name="firstScale" value="none" />
+          <label for="firstNone" title="No scale"></label>
+          <input
+            id="firstZeroOne"
+            type="radio"
+            name="firstScale"
+            value="zeroOne"
+          />
+          <label for="firstZeroOne" title="Scale using 0 to +1"></label>
+          <input
+            id="firstMinusPlusOne"
+            type="radio"
+            name="firstScale"
+            value="minusPlusOne"
+          />
+          <label for="firstMinusPlusOne" title="Scale using -1 to +1"></label>
+          <input
+            id="firstLimit"
+            type="radio"
+            name="firstLimit"
+            value="limit"
+            checked
+          />
+          <label for="firstLimit" title="Stop at limit"></label>
+          <input id="firstWrap" type="radio" name="firstLimit" value="wrap" />
+          <label for="firstWrap" title="Wrap at limit"></label>
+          <input
+            id="firstReflect"
+            type="radio"
+            name="firstLimit"
+            value="reflect"
+          />
+          <label for="firstReflect" title="Reflect at limit"></label>
+        </div>
       </div>
 
-      <label for="second" title="s"></label>
-      <textarea id="second" name="second" rows="3">
-Math.sin(xr * 5) + Math.sin(yr * 7)
-        </textarea
-      >
-      <div class="controls">
-        <input
-          id="secondMinMax"
-          type="radio"
-          name="secondScale"
-          value="minMax"
-          checked
-        />
-        <label for="secondMinMax" title="Scale using min to max"></label>
-        <input id="secondNone" type="radio" name="secondScale" value="none" />
-        <label for="secondNone" title="No scale"></label>
-        <input
-          id="secondMinusPlusOne"
-          type="radio"
-          name="secondScale"
-          value="minusPlusOne"
-        />
-        <label for="secondMinusPlusOne" title="Scale using -1 to +1"></label>
-        <input
-          id="secondLimit"
-          type="radio"
-          name="secondLimit"
-          value="limit"
-          checked
-        />
-        <label for="secondLimit" title="Stop at limit"></label>
-        <input id="secondWrap" type="radio" name="secondLimit" value="wrap" />
-        <label for="secondWrap" title="Wrap at limit"></label>
-        <input
-          id="secondReflect"
-          type="radio"
-          name="secondLimit"
-          value="reflect"
-        />
-        <label for="secondReflect" title="Reflect at limit"></label>
+      <div class="group">
+        <label for="second" title="s"></label>
+        <!-- prettier-ignore -->
+        <textarea id="second" name="second" rows="3" spellcheck="false">
+Math.sin(xr * 5) + Math.sin(yr * 7)</textarea>
+        <div class="controls">
+          <input
+            id="secondMinMax"
+            type="radio"
+            name="secondScale"
+            value="minMax"
+            checked
+          />
+          <label for="secondMinMax" title="Scale using min to max"></label>
+          <input id="secondNone" type="radio" name="secondScale" value="none" />
+          <label for="secondNone" title="No scale"></label>
+          <input
+            id="secondZeroOne"
+            type="radio"
+            name="secondScale"
+            value="zeroOne"
+          />
+          <label for="secondZeroOne" title="Scale using 0 to +1"></label>
+          <input
+            id="secondMinusPlusOne"
+            type="radio"
+            name="secondScale"
+            value="minusPlusOne"
+          />
+          <label for="secondMinusPlusOne" title="Scale using -1 to +1"></label>
+          <input
+            id="secondLimit"
+            type="radio"
+            name="secondLimit"
+            value="limit"
+            checked
+          />
+          <label for="secondLimit" title="Stop at limit"></label>
+          <input id="secondWrap" type="radio" name="secondLimit" value="wrap" />
+          <label for="secondWrap" title="Wrap at limit"></label>
+          <input
+            id="secondReflect"
+            type="radio"
+            name="secondLimit"
+            value="reflect"
+          />
+          <label for="secondReflect" title="Reflect at limit"></label>
+        </div>
       </div>
 
-      <label for="third" title="v"></label>
-      <textarea id="third" name="third" rows="3">
-Math.sin(xr * 7) * Math.sin(yr * 5)
-        </textarea
-      >
-      <div class="controls">
-        <input
-          id="thirdMinMax"
-          type="radio"
-          name="thirdScale"
-          value="minMax"
-          checked
-        />
-        <label for="thirdMinMax" title="Scale using min to max"></label>
-        <input id="thirdNone" type="radio" name="thirdScale" value="none" />
-        <label for="thirdNone" title="No scale"></label>
-        <input
-          id="thirdMinusPlusOne"
-          type="radio"
-          name="thirdScale"
-          value="minusPlusOne"
-        />
-        <label for="thirdMinusPlusOne" title="Scale using -1 to +1"></label>
-        <input
-          id="thirdLimit"
-          type="radio"
-          name="thirdLimit"
-          value="limit"
-          checked
-        />
-        <label for="thirdLimit" title="Stop at limit"></label>
-        <input id="thirdWrap" type="radio" name="thirdLimit" value="wrap" />
-        <label for="thirdWrap" title="Wrap at limit"></label>
-        <input
-          id="thirdReflect"
-          type="radio"
-          name="thirdLimit"
-          value="reflect"
-        />
-        <label for="thirdReflect" title="Reflect at limit"></label>
+      <div class="group">
+        <label for="third" title="v"></label>
+        <!-- prettier-ignore -->
+        <textarea id="third" name="third" rows="3" spellcheck="false">
+Math.sin(xr * 7) * Math.sin(yr * 5)</textarea>
+        <div class="controls">
+          <input
+            id="thirdMinMax"
+            type="radio"
+            name="thirdScale"
+            value="minMax"
+            checked
+          />
+          <label for="thirdMinMax" title="Scale using min to max"></label>
+          <input id="thirdNone" type="radio" name="thirdScale" value="none" />
+          <label for="thirdNone" title="No scale"></label>
+          <input
+            id="thirdZeroOne"
+            type="radio"
+            name="thirdScale"
+            value="zeroOne"
+          />
+          <label for="thirdZeroOne" title="Scale using 0 to +1"></label>
+          <input
+            id="thirdMinusPlusOne"
+            type="radio"
+            name="thirdScale"
+            value="minusPlusOne"
+          />
+          <label for="thirdMinusPlusOne" title="Scale using -1 to +1"></label>
+          <input
+            id="thirdLimit"
+            type="radio"
+            name="thirdLimit"
+            value="limit"
+            checked
+          />
+          <label for="thirdLimit" title="Stop at limit"></label>
+          <input id="thirdWrap" type="radio" name="thirdLimit" value="wrap" />
+          <label for="thirdWrap" title="Wrap at limit"></label>
+          <input
+            id="thirdReflect"
+            type="radio"
+            name="thirdLimit"
+            value="reflect"
+          />
+          <label for="thirdReflect" title="Reflect at limit"></label>
+        </div>
       </div>
 
-      <input id="colourMode" type="checkbox" name="colourMode" />
-      <label for="colourMode" title="HSV"></label>
-
-      <button id="run">Run</button>
-      <canvas id="draw" width="1400" height="1400"></canvas>
+      <div class="options">
+        <input id="colourMode" type="checkbox" name="colourMode" />
+        <label for="colourMode" title="HSV"></label>
+        <input id="imageSize" type="checkbox" name="imageSize" checked />
+        <label for="imageSize" title="Big"></label>
+        <button id="run" title="Run"></button>
+        <a class="home" href=".."></a>
+        <a
+          class="sourceCode"
+          href="https://github.com/van-appears/colourform#readme"
+          target="_blank"
+        ></a>
+      </div>
     </div>
     <div class="render"></div>
   </body>

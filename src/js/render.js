@@ -1,34 +1,14 @@
-const size = 1400;
+const canvas = require("./canvas");
+const convert = require("color-convert");
 const pi2 = 2 * Math.PI;
+const sizes = {
+  big: 1400,
+  small: 512
+};
 const limits = {
   hsv: [360, 100, 100],
   rgb: [255, 255, 255]
 };
-
-const convert = require("color-convert");
-const canvas = document.querySelector("#draw");
-const renderArea = document.querySelector(".render");
-const context = canvas.getContext("2d");
-const canvasData = context.getImageData(0, 0, size, size);
-
-function drawPixel(x, y, r, g, b) {
-  const index = (x + y * size) * 4;
-  canvasData.data[index + 0] = r;
-  canvasData.data[index + 1] = g;
-  canvasData.data[index + 2] = b;
-  canvasData.data[index + 3] = 255;
-}
-
-function buildImage(imgClick) {
-  context.putImageData(canvasData, 0, 0);
-  const img = new Image();
-  img.src = canvas.toDataURL();
-  img.onclick = imgClick;
-  if (renderArea.firstChild) {
-    renderArea.removeChild(renderArea.firstChild);
-  }
-  renderArea.appendChild(img);
-}
 
 function asFn(str) {
   return new Function(
@@ -87,7 +67,10 @@ function asLimit(limitOpt) {
 
 function asScale(scaleOpt) {
   if (scaleOpt === "minusPlusOne") {
-    return (val, max) => ((val + 1) * max) / 2;
+    return (val, max) => ((val + 1) / 2) * max;
+  }
+  if (scaleOpt === "zeroOne") {
+    return (val, max) => val * max;
   }
   if (scaleOpt === "minMax") {
     return (val, max, low, high) => (max * (val - low)) / (high - low || 1);
@@ -95,11 +78,22 @@ function asScale(scaleOpt) {
   return val => val;
 }
 
-function render(firstOpt, secondOpt, thirdOpt, colourMode, imgClick) {
+function setNewImage(img, imgClick) {
+  const renderArea = document.querySelector(".render");
+  img.onclick = imgClick;
+  if (renderArea.firstChild) {
+    renderArea.removeChild(renderArea.firstChild);
+  }
+  renderArea.appendChild(img);
+}
+
+function render(firstOpt, secondOpt, thirdOpt, colourMode, imgSize, imgClick) {
   let firstFn, secondFn, thirdFn;
   let firstScale, secondScal, thirdScale;
   let firstLimit, secondLimit, thirdLimit;
   let failures = [];
+  const size = sizes[imgSize];
+  const imgCanvas = canvas(size);
 
   try {
     firstFn = asFn(firstOpt.fn);
@@ -168,11 +162,12 @@ function render(firstOpt, secondOpt, thirdOpt, colourMode, imgClick) {
         colourMode === "hsv"
           ? convert.hsv.rgb.raw(first, second, third)
           : [first, second, third];
-      drawPixel(x, y, r, g, b);
+      imgCanvas.drawPixel(x, y, r, g, b);
     }
   }
 
-  buildImage(imgClick);
+  const img = imgCanvas.buildImage();
+  setNewImage(img, imgClick);
 }
 
 module.exports = render;
