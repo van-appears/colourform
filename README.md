@@ -1,6 +1,12 @@
 # colourform
 Enter three formulas and press the 'Run' button to generate an image.
 
+# formulas
+When creating a formula there are three supplies values you can use:  `x`, `y` and `pi2` (= Math.PI * 2).
+Note that `x` and `y` are not absolute positions, they are scaled values from zero to one.
+So, for example, setting a formula to `Math.sin(x * pi2)` when run would give a sinusuoidal shape from left to right.
+Each formula is parsed using plain javascript.
+
 # control
 Each attribute expects a different value range
 For HSV
@@ -35,10 +41,8 @@ export NODE_ENV=production
 npm run build
 ```
 
-TODO - better layout for
 TODO - tidy up form layouts
-TODO - use x/y = 0-1 only, get rid xr, yr
-TODO - add title
 TODO - label change for hsv / colour
 TODO - highlight invalid formulas
 TODO - finish documentation
+TODO - run generation outside event; disable/enable run button

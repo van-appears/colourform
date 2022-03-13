@@ -1,21 +1,23 @@
 const render = require("./render");
 
 window.onload = function () {
-  let colourMode = document.querySelector("#colourMode").checked
+  const qs = s => document.querySelector(s);
+  let colourMode = qs("#colourMode").checked
     ? "hsv"
     : "rgb";
+  qs("#model").className = colourMode;
 
   function getCleanedFn(field) {
-    const value = document.querySelector("[name=" + field + "]").value;
+    const value = qs("[name=" + field + "]").value;
     return value.replace(/\n/g, "").trim();
   }
 
   function getScale(field) {
-    return document.querySelector("[name=" + field + "Scale]:checked").value;
+    return qs("[name=" + field + "Scale]:checked").value;
   }
 
   function getLimit(field) {
-    return document.querySelector("[name=" + field + "Limit]:checked").value;
+    return qs("[name=" + field + "Limit]:checked").value;
   }
 
   function opt(field) {
@@ -28,15 +30,15 @@ window.onload = function () {
   }
 
   function getColourMode() {
-    return document.querySelector("[name=colour]").checked ? "rgb" : "hsv";
+    return qs("[name=colour]").checked ? "rgb" : "hsv";
   }
 
   function getImageSize() {
-    return document.querySelector("[name=imageSize]").checked ? "big" : "small";
+    return qs("[name=imageSize]").checked ? "big" : "small";
   }
 
   function setGenerated(flag) {
-    document.querySelector("body").className = flag ? "generated" : "";
+    qs("body").className = flag ? "generated" : "";
   }
 
   function setEnabled(field, disabled) {
@@ -46,11 +48,29 @@ window.onload = function () {
     }
   }
 
-  setEnabled("firstLimit", document.querySelector("#firstMinMax").checked);
-  setEnabled("secondLimit", document.querySelector("#secondMinMax").checked);
-  setEnabled("thirdLimit", document.querySelector("#thirdMinMax").checked);
+  function updateColourLabels() {
+    if (colourMode === "hsv") {
+      qs("label[for=first]").innerHTML = 'Hue';
+      qs("label[for=first]").title = 'Hue formula (0 - 360)';
+      qs("label[for=second]").innerHTML = 'Saturation';
+      qs("label[for=second]").title = 'Saturation formula (0 - 100)';
+      qs("label[for=third]").innerHTML = 'Value';
+      qs("label[for=third]").title = 'Value formula (0 - 100)';
+    } else {
+      qs("label[for=first]").innerHTML = 'Red';
+      qs("label[for=first]").title = 'Red formula (0 - 255)';
+      qs("label[for=second]").innerHTML = 'Green';
+      qs("label[for=second]").title = 'Green formula (0 - 255)';
+      qs("label[for=third]").innerHTML = 'Blue';
+      qs("label[for=third]").title = 'Blue formula (0 - 255)';
+    }
+  }
 
-  document.querySelector("#run").onclick = function () {
+  setEnabled("firstLimit", qs("#firstMinMax").checked);
+  setEnabled("secondLimit", qs("#secondMinMax").checked);
+  setEnabled("thirdLimit", qs("#thirdMinMax").checked);
+
+  qs("#run").onclick = function () {
     setGenerated(true);
     render(
       opt("first"),
@@ -62,12 +82,13 @@ window.onload = function () {
     );
   };
 
-  document.querySelector("#colourMode").onclick = function (e) {
+  qs("#colourMode").onclick = function (e) {
     colourMode = e.target.checked ? "hsv" : "rgb";
-    document.querySelector("#model").className = colourMode;
+    qs("#model").className = colourMode;
+    updateColourLabels();
   };
 
-  document.querySelector("#model").onchange = function (e) {
+  qs("#model").onchange = function (e) {
     if (e.target.name === "firstScale") {
       setEnabled("firstLimit", e.target.value === "minMax");
     } else if (e.target.name === "secondScale") {
@@ -76,4 +97,6 @@ window.onload = function () {
       setEnabled("thirdLimit", e.target.value === "minMax");
     }
   };
+
+  updateColourLabels();
 };

@@ -14,9 +14,6 @@ function asFn(str) {
   return new Function(
     "x",
     "y",
-    "xr",
-    "yr",
-    "l",
     "pi2",
     `
 try {
@@ -136,9 +133,9 @@ function render(firstOpt, secondOpt, thirdOpt, colourMode, imgSize, imgClick) {
     for (let y = 0; y < size; y++) {
       const xr = x / (size - 1);
       const yr = y / (size - 1);
-      const first = firstFn(x, y, xr, yr, size, pi2);
-      const second = secondFn(x, y, xr, yr, size, pi2);
-      const third = thirdFn(x, y, xr, yr, size, pi2);
+      const first = firstFn(xr, yr, pi2);
+      const second = secondFn(xr, yr, pi2);
+      const third = thirdFn(xr, yr, pi2);
 
       values[x][y] = [first, second, third];
       firstMin = Math.min(first, firstMin);

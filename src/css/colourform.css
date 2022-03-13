@@ -118,6 +118,13 @@ a.sourceCode {
   background-position: -64px -32px;
 }
 
+label[for="first"],
+label[for="second"],
+label[for="third"] {
+  text-indent: 40px;
+  line-height: 32px;
+}
+
 label[for="colourMode"] {
   background-position: -96px 0;
   margin-right: 4px;
@@ -189,12 +196,18 @@ a.sourceCode {
 }
 
 @media only screen and (max-width: 768px) {
+  body {
+    justify-content: center;
+  }
+
   .generated #model {
     display: none;
   }
+
   .render {
     display: none;
   }
+
   .generated .render {
     width: 100%;
     display: block;
