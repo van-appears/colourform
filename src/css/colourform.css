@@ -94,6 +94,10 @@ a.sourceCode {
   background-position: -384px 0;
 }
 
+#run:disabled {
+  opacity: 0.1;
+}
+
 .rgb label[for="first"] {
   background-position: 0 0;
 }

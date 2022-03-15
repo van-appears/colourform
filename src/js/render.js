@@ -75,16 +75,7 @@ function asScale(scaleOpt) {
   return val => val;
 }
 
-function setNewImage(img, imgClick) {
-  const renderArea = document.querySelector(".render");
-  img.onclick = imgClick;
-  if (renderArea.firstChild) {
-    renderArea.removeChild(renderArea.firstChild);
-  }
-  renderArea.appendChild(img);
-}
-
-function render(firstOpt, secondOpt, thirdOpt, colourMode, imgSize, imgClick) {
+function render(firstOpt, secondOpt, thirdOpt, colourMode, imgSize, callback) {
   let firstFn, secondFn, thirdFn;
   let firstScale, secondScal, thirdScale;
   let firstLimit, secondLimit, thirdLimit;
@@ -163,8 +154,7 @@ function render(firstOpt, secondOpt, thirdOpt, colourMode, imgSize, imgClick) {
     }
   }
 
-  const img = imgCanvas.buildImage();
-  setNewImage(img, imgClick);
+  callback(imgCanvas.buildImage());
 }
 
 module.exports = render;

@@ -41,8 +41,9 @@ export NODE_ENV=production
 npm run build
 ```
 
+TODO - default to small
 TODO - tidy up form layouts
-TODO - label change for hsv / colour
 TODO - highlight invalid formulas
 TODO - finish documentation
-TODO - run generation outside event; disable/enable run button
+TODO - worker for generation?
+

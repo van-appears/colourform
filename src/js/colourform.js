@@ -2,6 +2,7 @@ const render = require("./render");
 
 window.onload = function () {
   const qs = s => document.querySelector(s);
+  const renderArea = qs(".render");
   let colourMode = qs("#colourMode").checked
     ? "hsv"
     : "rgb";
@@ -66,20 +67,33 @@ window.onload = function () {
     }
   }
 
-  setEnabled("firstLimit", qs("#firstMinMax").checked);
-  setEnabled("secondLimit", qs("#secondMinMax").checked);
-  setEnabled("thirdLimit", qs("#thirdMinMax").checked);
-
-  qs("#run").onclick = function () {
-    setGenerated(true);
+  function runRender() {
     render(
       opt("first"),
       opt("second"),
       opt("third"),
       colourMode,
       getImageSize(),
-      () => setGenerated(false)
+      img => {
+        img.onclick = () => setGenerated(false);
+        renderArea.appendChild(img);
+        qs("#run").disabled = false;
+      }
     );
+  }
+
+  setEnabled("firstLimit", qs("#firstMinMax").checked);
+  setEnabled("secondLimit", qs("#secondMinMax").checked);
+  setEnabled("thirdLimit", qs("#thirdMinMax").checked);
+
+  qs("#run").onclick = function () {
+    setGenerated(true);
+    qs("#run").disabled = true;
+    if (renderArea.firstChild) {
+      renderArea.removeChild(renderArea.firstChild);
+    }
+    // arbitrary timeout to let the UI update
+    setTimeout(runRender, 100);
   };
 
   qs("#colourMode").onclick = function (e) {
