@@ -3,10 +3,7 @@ const render = require("./render");
 window.onload = function () {
   const qs = s => document.querySelector(s);
   const renderArea = qs(".render");
-  let colourMode = qs("#colourMode").checked
-    ? "hsv"
-    : "rgb";
-  qs("#model").className = colourMode;
+  let imageSize, colourMode;
 
   function getCleanedFn(field) {
     const value = qs("[name=" + field + "]").value;
@@ -30,12 +27,35 @@ window.onload = function () {
     };
   }
 
-  function getColourMode() {
-    return qs("[name=colour]").checked ? "rgb" : "hsv";
+  function setColourMode() {
+    colourMode = qs("#colourMode").checked ? "hsv" : "rgb";
+    qs("#model").className = colourMode;
+    if (colourMode === "hsv") {
+      qs("label[for=colourMode]").title = 'Hue, Saturation, Value';
+      qs("label[for=first]").innerHTML = 'Hue';
+      qs("label[for=first]").title = 'Hue formula (0 - 360)';
+      qs("label[for=second]").innerHTML = 'Saturation';
+      qs("label[for=second]").title = 'Saturation formula (0 - 100)';
+      qs("label[for=third]").innerHTML = 'Value';
+      qs("label[for=third]").title = 'Value formula (0 - 100)';
+    } else {
+      qs("label[for=colourMode]").title = 'Red, Green, Blue';
+      qs("label[for=first]").innerHTML = 'Red';
+      qs("label[for=first]").title = 'Red formula (0 - 255)';
+      qs("label[for=second]").innerHTML = 'Green';
+      qs("label[for=second]").title = 'Green formula (0 - 255)';
+      qs("label[for=third]").innerHTML = 'Blue';
+      qs("label[for=third]").title = 'Blue formula (0 - 255)';
+    }
   }
 
-  function getImageSize() {
-    return qs("[name=imageSize]").checked ? "big" : "small";
+  function setImageSize() {
+    imageSize = qs("[name=imageSize]").checked ? "big" : "small";
+    if (imageSize === "big") {
+      qs("label[for=imageSize]").title = 'Big (1400 x 1400)';
+    } else {
+      qs("label[for=imageSize]").title = 'Small (512 x 512)';
+    }
   }
 
   function setGenerated(flag) {
@@ -49,31 +69,13 @@ window.onload = function () {
     }
   }
 
-  function updateColourLabels() {
-    if (colourMode === "hsv") {
-      qs("label[for=first]").innerHTML = 'Hue';
-      qs("label[for=first]").title = 'Hue formula (0 - 360)';
-      qs("label[for=second]").innerHTML = 'Saturation';
-      qs("label[for=second]").title = 'Saturation formula (0 - 100)';
-      qs("label[for=third]").innerHTML = 'Value';
-      qs("label[for=third]").title = 'Value formula (0 - 100)';
-    } else {
-      qs("label[for=first]").innerHTML = 'Red';
-      qs("label[for=first]").title = 'Red formula (0 - 255)';
-      qs("label[for=second]").innerHTML = 'Green';
-      qs("label[for=second]").title = 'Green formula (0 - 255)';
-      qs("label[for=third]").innerHTML = 'Blue';
-      qs("label[for=third]").title = 'Blue formula (0 - 255)';
-    }
-  }
-
   function runRender() {
     render(
       opt("first"),
       opt("second"),
       opt("third"),
       colourMode,
-      getImageSize(),
+      imageSize,
       img => {
         img.onclick = () => setGenerated(false);
         renderArea.appendChild(img);
@@ -81,10 +83,6 @@ window.onload = function () {
       }
     );
   }
-
-  setEnabled("firstLimit", qs("#firstMinMax").checked);
-  setEnabled("secondLimit", qs("#secondMinMax").checked);
-  setEnabled("thirdLimit", qs("#thirdMinMax").checked);
 
   qs("#run").onclick = function () {
     setGenerated(true);
@@ -97,9 +95,11 @@ window.onload = function () {
   };
 
   qs("#colourMode").onclick = function (e) {
-    colourMode = e.target.checked ? "hsv" : "rgb";
-    qs("#model").className = colourMode;
-    updateColourLabels();
+    setColourMode(e.target.checked);
+  };
+
+  qs("#imageSize").onclick = function (e) {
+    setImageSize(e.target.checked);
   };
 
   qs("#model").onchange = function (e) {
@@ -112,5 +112,10 @@ window.onload = function () {
     }
   };
 
-  updateColourLabels();
+  qs("#model").className = colourMode;
+  setEnabled("firstLimit", qs("#firstMinMax").checked);
+  setEnabled("secondLimit", qs("#secondMinMax").checked);
+  setEnabled("thirdLimit", qs("#thirdMinMax").checked);
+  setColourMode();
+  setImageSize();
 };

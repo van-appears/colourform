@@ -41,9 +41,9 @@ export NODE_ENV=production
 npm run build
 ```
 
-TODO - default to small
-TODO - tidy up form layouts
 TODO - highlight invalid formulas
 TODO - finish documentation
 TODO - worker for generation?
+TODO - handle when mix=max and no scale
+TODO - add formula shuffle
 
