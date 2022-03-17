@@ -187,6 +187,10 @@ input[type="checkbox"]:checked + label {
   background-position-y: -32px;
 }
 
+textarea.invalid {
+  border-color: red;
+}
+
 a.home {
   background-position: -416px -32px;
   position: relative;

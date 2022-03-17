@@ -69,6 +69,12 @@ window.onload = function () {
     }
   }
 
+  function setFailures(failures) {
+    ["first", "second", "third"].forEach(f => {
+      qs(`#${f}`).className = failures.includes(f) ? "invalid" : "";
+    });
+  }
+
   function runRender() {
     render(
       opt("first"),
@@ -76,10 +82,15 @@ window.onload = function () {
       opt("third"),
       colourMode,
       imageSize,
-      img => {
-        img.onclick = () => setGenerated(false);
-        renderArea.appendChild(img);
+      (failures, img) => {
+        setFailures(failures);
         qs("#run").disabled = false;
+        if (failures && failures.length) {
+          setGenerated(false);
+        } else {
+          img.onclick = () => setGenerated(false);
+          renderArea.appendChild(img);
+        }
       }
     );
   }

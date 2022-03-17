@@ -24,6 +24,11 @@ try {
   );
 }
 
+function testFn(str) {
+  const fn = new Function("x", "y", "pi2", `return (${str})`);
+  fn(0, 0, pi2);
+}
+
 function limit(val, max) {
   return Math.min(Math.max(0, val), max);
 }
@@ -84,31 +89,38 @@ function render(firstOpt, secondOpt, thirdOpt, colourMode, imgSize, callback) {
   const imgCanvas = canvas(size);
 
   try {
+    testFn(firstOpt.fn);
     firstFn = asFn(firstOpt.fn);
     firstScale = asScale(firstOpt.scale);
     firstLimit = asLimit(firstOpt.limit);
   } catch (e) {
+    console.error(e);
     failures.push(firstOpt.field);
   }
 
   try {
+    testFn(secondOpt.fn);
     secondFn = asFn(secondOpt.fn);
     secondScale = asScale(secondOpt.scale);
     secondLimit = asLimit(secondOpt.limit);
   } catch (e) {
+    console.error(e);
     failures.push(secondOpt.field);
   }
 
   try {
+    testFn(thirdOpt.fn);
     thirdFn = asFn(thirdOpt.fn);
     thirdScale = asScale(thirdOpt.scale);
     thirdLimit = asLimit(thirdOpt.limit);
   } catch (e) {
+    console.error(e);
     failures.push(thirdOpt.field);
   }
 
   if (failures.length) {
-    return failures;
+    callback(failures);
+    return;
   }
 
   const values = new Array(size);
@@ -154,7 +166,7 @@ function render(firstOpt, secondOpt, thirdOpt, colourMode, imgSize, callback) {
     }
   }
 
-  callback(imgCanvas.buildImage());
+  callback([], imgCanvas.buildImage());
 }
 
 module.exports = render;

@@ -41,7 +41,7 @@ export NODE_ENV=production
 npm run build
 ```
 
-TODO - highlight invalid formulas
+TODO - show formular error message
 TODO - finish documentation
 TODO - worker for generation?
 TODO - handle when mix=max and no scale
