@@ -17,6 +17,7 @@
         <!-- prettier-ignore -->
         <textarea id="first" name="first" rows="3" spellcheck="false">
 (x + 0.1) * y * 2.5</textarea>
+        <span for="first" class="error"></span>
         <div class="controls">
           <input
             id="firstMinMax"
@@ -67,6 +68,7 @@
         <!-- prettier-ignore -->
         <textarea id="second" name="second" rows="3" spellcheck="false">
 (Math.pow(x, 1.5) - 0.1) * y * 2.9</textarea>
+        <span for="second" class="error"></span>
         <div class="controls">
           <input
             id="secondMinMax"
@@ -117,6 +119,7 @@
         <!-- prettier-ignore -->
         <textarea id="third" name="third" rows="3" spellcheck="false">
 x * Math.pow(y, 0.5) * 2.7</textarea>
+        <span for="third" class="error"></span>
         <div class="controls">
           <input
             id="thirdMinMax"
@@ -167,6 +170,7 @@ x * Math.pow(y, 0.5) * 2.7</textarea>
         <label for="colourMode" title="HSV"></label>
         <input id="imageSize" type="checkbox" name="imageSize" />
         <label for="imageSize" title="Small"></label>
+        <button id="shuffle" title="Shuffle"></button>
         <button id="run" title="Run"></button>
         <a class="home" href=".."></a>
         <a

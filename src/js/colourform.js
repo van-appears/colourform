@@ -1,13 +1,19 @@
 const render = require("./render");
 
+// no cheating on your formulas!
+fetch = null;
+XMLHttpRequest = null;
+
 window.onload = function () {
   const qs = s => document.querySelector(s);
   const renderArea = qs(".render");
   let imageSize, colourMode;
 
   function getCleanedFn(field) {
-    const value = qs("[name=" + field + "]").value;
-    return value.replace(/\n/g, "").trim();
+    let value = qs(`[name=${field}]`).value;
+    value = value.replace(/\n/g, "").trim();
+    value = value.replace(/;$/, "");
+    return value;
   }
 
   function getScale(field) {
@@ -31,30 +37,30 @@ window.onload = function () {
     colourMode = qs("#colourMode").checked ? "hsv" : "rgb";
     qs("#model").className = colourMode;
     if (colourMode === "hsv") {
-      qs("label[for=colourMode]").title = 'Hue, Saturation, Value';
-      qs("label[for=first]").innerHTML = 'Hue';
-      qs("label[for=first]").title = 'Hue formula (0 - 360)';
-      qs("label[for=second]").innerHTML = 'Saturation';
-      qs("label[for=second]").title = 'Saturation formula (0 - 100)';
-      qs("label[for=third]").innerHTML = 'Value';
-      qs("label[for=third]").title = 'Value formula (0 - 100)';
+      qs("label[for=colourMode]").title = "Hue, Saturation, Value";
+      qs("label[for=first]").innerHTML = "Hue";
+      qs("label[for=first]").title = "Hue formula (0 - 360)";
+      qs("label[for=second]").innerHTML = "Saturation";
+      qs("label[for=second]").title = "Saturation formula (0 - 100)";
+      qs("label[for=third]").innerHTML = "Value";
+      qs("label[for=third]").title = "Value formula (0 - 100)";
     } else {
-      qs("label[for=colourMode]").title = 'Red, Green, Blue';
-      qs("label[for=first]").innerHTML = 'Red';
-      qs("label[for=first]").title = 'Red formula (0 - 255)';
-      qs("label[for=second]").innerHTML = 'Green';
-      qs("label[for=second]").title = 'Green formula (0 - 255)';
-      qs("label[for=third]").innerHTML = 'Blue';
-      qs("label[for=third]").title = 'Blue formula (0 - 255)';
+      qs("label[for=colourMode]").title = "Red, Green, Blue";
+      qs("label[for=first]").innerHTML = "Red";
+      qs("label[for=first]").title = "Red formula (0 - 255)";
+      qs("label[for=second]").innerHTML = "Green";
+      qs("label[for=second]").title = "Green formula (0 - 255)";
+      qs("label[for=third]").innerHTML = "Blue";
+      qs("label[for=third]").title = "Blue formula (0 - 255)";
     }
   }
 
   function setImageSize() {
     imageSize = qs("[name=imageSize]").checked ? "big" : "small";
     if (imageSize === "big") {
-      qs("label[for=imageSize]").title = 'Big (1400 x 1400)';
+      qs("label[for=imageSize]").title = "Big (1400 x 1400)";
     } else {
-      qs("label[for=imageSize]").title = 'Small (512 x 512)';
+      qs("label[for=imageSize]").title = "Small (512 x 512)";
     }
   }
 
@@ -63,7 +69,7 @@ window.onload = function () {
   }
 
   function setEnabled(field, disabled) {
-    const fields = document.querySelectorAll("[name=" + field + "]");
+    const fields = document.querySelectorAll(`[name=${field}]`);
     for (let index = 0; index < fields.length; index++) {
       fields[index].disabled = disabled;
     }
@@ -71,7 +77,8 @@ window.onload = function () {
 
   function setFailures(failures) {
     ["first", "second", "third"].forEach(f => {
-      qs(`#${f}`).className = failures.includes(f) ? "invalid" : "";
+      qs(`#${f}`).className = failures[f] ? "invalid" : "";
+      qs(`span[for=${f}].error`).innerHTML = failures[f] || "";
     });
   }
 
@@ -83,9 +90,9 @@ window.onload = function () {
       colourMode,
       imageSize,
       (failures, img) => {
-        setFailures(failures);
+        setFailures(failures || {});
         qs("#run").disabled = false;
-        if (failures && failures.length) {
+        if (failures) {
           setGenerated(false);
         } else {
           img.onclick = () => setGenerated(false);
@@ -103,6 +110,19 @@ window.onload = function () {
     }
     // arbitrary timeout to let the UI update
     setTimeout(runRender, 100);
+  };
+
+  qs("#shuffle").onclick = function () {
+    const positions = ["first", "second", "third"];
+    positions
+      .map(field => ({
+        v: qs(`[name=${field}]`).value,
+        r: Math.random()
+      }))
+      .sort((a, b) => a.r - b.r)
+      .forEach(({ v }, i) => {
+        qs(`[name=${positions[i]}]`).value = v;
+      });
   };
 
   qs("#colourMode").onclick = function (e) {

@@ -94,6 +94,13 @@ a.sourceCode {
   background-position: -384px 0;
 }
 
+#shuffle {
+  width: 34px;
+  height: 34px;
+  background-position: -384px -32px;
+  margin-right: 4px;
+}
+
 #run:disabled {
   opacity: 0.1;
 }
@@ -191,16 +198,20 @@ textarea.invalid {
   border-color: red;
 }
 
+span.error {
+  color: red;
+}
+
 a.home {
   background-position: -416px -32px;
   position: relative;
-  left: 118px;
+  left: 88px;
 }
 
 a.sourceCode {
   background-position: -416px 0;
   position: relative;
-  left: 122px;
+  left: 90px;
 }
 
 @media only screen and (max-width: 768px) {

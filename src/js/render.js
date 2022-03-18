@@ -75,7 +75,7 @@ function asScale(scaleOpt) {
     return (val, max) => val * max;
   }
   if (scaleOpt === "minMax") {
-    return (val, max, low, high) => (max * (val - low)) / (high - low || 1);
+    return (val, max, low, high) => (max * (val - low)) / (high - low);
   }
   return val => val;
 }
@@ -84,7 +84,7 @@ function render(firstOpt, secondOpt, thirdOpt, colourMode, imgSize, callback) {
   let firstFn, secondFn, thirdFn;
   let firstScale, secondScal, thirdScale;
   let firstLimit, secondLimit, thirdLimit;
-  let failures = [];
+  let failures = null;
   const size = sizes[imgSize];
   const imgCanvas = canvas(size);
 
@@ -95,7 +95,7 @@ function render(firstOpt, secondOpt, thirdOpt, colourMode, imgSize, callback) {
     firstLimit = asLimit(firstOpt.limit);
   } catch (e) {
     console.error(e);
-    failures.push(firstOpt.field);
+    failures = { [firstOpt.field]: e };
   }
 
   try {
@@ -105,7 +105,7 @@ function render(firstOpt, secondOpt, thirdOpt, colourMode, imgSize, callback) {
     secondLimit = asLimit(secondOpt.limit);
   } catch (e) {
     console.error(e);
-    failures.push(secondOpt.field);
+    failures = { [secondOpt.field]: e, ...failures };
   }
 
   try {
@@ -115,10 +115,10 @@ function render(firstOpt, secondOpt, thirdOpt, colourMode, imgSize, callback) {
     thirdLimit = asLimit(thirdOpt.limit);
   } catch (e) {
     console.error(e);
-    failures.push(thirdOpt.field);
+    failures = { [thirdOpt.field]: e, ...failures };
   }
 
-  if (failures.length) {
+  if (failures) {
     callback(failures);
     return;
   }
@@ -150,6 +150,16 @@ function render(firstOpt, secondOpt, thirdOpt, colourMode, imgSize, callback) {
     }
   }
 
+  if (firstMin === firstMax) {
+    firstMin = 0;
+  }
+  if (secondMin === secondMax) {
+    secondMin = 0;
+  }
+  if (thirdMin === thirdMax) {
+    thirdMin = 0;
+  }
+
   let [l1, l2, l3] = limits[colourMode];
   for (let x = 0; x < size; x++) {
     for (let y = 0; y < size; y++) {
@@ -166,7 +176,7 @@ function render(firstOpt, secondOpt, thirdOpt, colourMode, imgSize, callback) {
     }
   }
 
-  callback([], imgCanvas.buildImage());
+  callback(null, imgCanvas.buildImage());
 }
 
 module.exports = render;
